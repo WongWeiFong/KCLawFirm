@@ -16,7 +16,7 @@ export default function Lawyers() {
               <Link key={l.id} to={`/lawyers/${l.id}`} className="card">
                 <Initials name={l.name} />
                 <h3>{l.name}</h3>
-                <p>{l.role}, {l.area}</p>
+                <p>{l.area ? `${l.role}, ${l.area}` : l.role}</p>
               </Link>
             ))}
           </div>

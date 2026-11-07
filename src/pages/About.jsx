@@ -29,7 +29,7 @@ export default function About() {
             <aside className="side">
               <h3>At a glance</h3>
               <p className="meta">Founded 1998</p>
-              <p className="meta">Kuala Lumpur, Malaysia</p>
+              <p className="meta">Kuantan and Mentakab, Pahang</p>
               <p className="meta">Admitted to the Malaysian Bar</p>
               <Link className="btn line" to="/lawyers">Meet our lawyers</Link>
             </aside>

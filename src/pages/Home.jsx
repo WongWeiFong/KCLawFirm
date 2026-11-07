@@ -14,7 +14,7 @@ export default function Home() {
           <div>
             <h1>Clear legal advice for businesses, families and property owners.</h1>
             <p className="lead">
-              Tan & Rahman is a Kuala Lumpur law firm. We explain your options in plain language and act for you with care.
+              Tan & Rahman is a law firm with offices in Kuantan and Mentakab, Pahang. We explain your options in plain language and act for you with care.
             </p>
             <div className="btns">
               <Link className="btn gold" to="/contact">Contact the firm</Link>

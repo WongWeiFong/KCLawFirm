@@ -1,19 +1,60 @@
-# Tan & Rahman – Law Firm Website (React)
+# Law Firm Website (React + Vite + Supabase)
 
-Frontend only. Static data, no backend.
+One React app containing the public website and a protected admin area.
+Backend: Supabase (authentication, Postgres database, image storage). Hosting: Vercel.
 
-## Run
+## 1. Set up Supabase (about 10 minutes)
+
+1. Create a project at https://supabase.com.
+2. Open **SQL Editor**, paste all of `supabase/schema.sql` and run it. This creates the tables,
+   the security rules, the image bucket and starter content.
+3. **Authentication → Users → Add user**: create the administrator (email + password, tick *Auto confirm*).
+4. Run this in the SQL Editor with that email to make the account an administrator:
+   ```sql
+   update public.profiles set role = 'admin' where email = 'you@example.com';
+   ```
+5. **Authentication → Sign In / Providers**: turn **off** "Allow new users to sign up" so nobody else can register.
+6. **Project Settings → API**: copy the Project URL and the `anon` public key.
+
+## 2. Run locally
+
 ```bash
+cp .env.example .env.local     # then paste the two values from step 6
 npm install
-npm run dev      # development
-npm run build    # production build in /dist
+npm run dev
 ```
 
-## Structure
-- `src/data/content.js` – all firm content (practice areas, lawyers, articles, FAQ, contact details)
-- `src/pages/` – one component per page
-- `src/components/` – Layout (header, footer), Cta, Initials
-- `src/index.css` – white and gold theme (colours are CSS variables at the top)
+Public site: http://localhost:5173 — Admin: http://localhost:5173/admin/login
 
-## Deployment note
-Uses React Router `BrowserRouter`. On a static host, configure a fallback to `index.html` for unknown paths.
+## 3. Deploy to Vercel
+
+1. Push to GitHub (`.env.local` is git-ignored).
+2. Import the repository in Vercel (Framework: Vite, build `npm run build`, output `dist`).
+3. **Settings → Environment Variables**: add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, then redeploy.
+4. In Supabase **Authentication → URL Configuration**, set the Site URL to your Vercel domain.
+
+`vercel.json` already rewrites all paths to `index.html` so links such as `/articles/my-post` work on refresh.
+
+## Security notes
+
+- Only the **anon** key goes in the frontend. Never put the `service_role` key in this project or in Vercel variables.
+- The anon key is meant to be public. Protection comes from the row-level security rules in `schema.sql`:
+  visitors can read only published articles, active lawyers and active offices; only an `admin` can write anything.
+- `ProtectedRoute` only hides admin screens. Even if someone bypassed it, the database would refuse the changes.
+- Passwords are handled by Supabase Auth. No credentials exist in the source code.
+- Article text is rendered as plain paragraphs (no raw HTML), which avoids script injection.
+
+## Structure
+
+```text
+src/
+├── components/{public,admin,common}
+├── pages/{public,admin}
+├── services/        auth, articles, lawyers, office, storage (all database calls)
+├── context/         AuthContext, SiteContext
+├── routes/          ProtectedRoute
+├── hooks/  lib/  data/
+supabase/schema.sql
+```
+
+Practice areas and the FAQ are static (`src/data/staticContent.js`) because they are not in the admin requirements.

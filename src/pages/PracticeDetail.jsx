@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import Cta from "../components/Cta.jsx";
 import NotFound from "./NotFound.jsx";
 import usePageTitle from "../hooks/usePageTitle.js";
-import { CONTACT, LAWYERS, PRACTICE_AREAS } from "../data/content.js";
+import { OFFICES, LAWYERS, PRACTICE_AREAS } from "../data/content.js";
 
 export default function PracticeDetail() {
   const { id } = useParams();
@@ -36,7 +36,7 @@ export default function PracticeDetail() {
                   <span className="meta">{l.role}</span>
                 </p>
               ))}
-              <a className="btn gold" href={`tel:${CONTACT.tel}`}>Call us</a>
+              <a className="btn gold" href={`tel:${OFFICES[0].phones[0].tel}`}>Call us</a>
             </aside>
           </div>
         </div>

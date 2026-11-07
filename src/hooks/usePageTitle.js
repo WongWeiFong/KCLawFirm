@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import { FULL } from "../data/content.js";
+
+const SUFFIX = "Tan & Rahman Advocates & Solicitors";
 
 export default function usePageTitle(title) {
   useEffect(() => {
-    document.title = title ? `${title} | ${FULL}` : FULL;
+    document.title = title ? `${title} | ${SUFFIX}` : SUFFIX;
   }, [title]);
 }

@@ -2,14 +2,36 @@ export const FIRM = "Tan & Rahman";
 export const FULL = "Tan & Rahman Advocates & Solicitors";
 
 export const CONTACT = {
-  phone: "+60 3-1234 5678",
-  tel: "+60312345678",
-  email: "hello@tanrahman.example",
-  whatsapp: "60123456789",
-  address: ["Level 18, Menara Contoh", "Jalan Sultan Ismail", "50250 Kuala Lumpur, Malaysia"],
-  hours: "Monday to Friday, 9:00 am to 6:00 pm",
-  mapQuery: "Jalan Sultan Ismail, Kuala Lumpur",
+  // Firm-wide details shared by both offices.
+  // NOTE: this WhatsApp number is Kelly Chan's mobile. Replace it with the firm's WhatsApp number if different.
+  whatsapp: "60123391446",
+  hours: "Monday to Friday, 9:00 am to 6:00 pm", // placeholder: confirm the real office hours
 };
+
+export const OFFICES = [
+  {
+    id: "kuantan",
+    name: "Kuantan Office",
+    address: ["A-9, Tingkat 2,", "Jalan Seri Kuantan 2,", "Sri Kuantan Square,", "25050 Kuantan,", "Pahang Darul Makmur"],
+    phones: [
+      { display: "09-515 8988", tel: "+6095158988" },
+      { display: "09-515 8984", tel: "+6095158984" },
+      { display: "09-515 8981", tel: "+6095158981" },
+    ],
+    fax: "09-515 8980",
+    email: "nrhkuantan@gmail.com",
+    mapQuery: "Sri Kuantan Square, Jalan Seri Kuantan 2, 25050 Kuantan, Pahang",
+  },
+  {
+    id: "mentakab",
+    name: "Mentakab Office",
+    address: ["No. 7, Tingkat Atas,", "Jalan Haji Kassim,", "28400 Mentakab,", "Pahang Darul Makmur"],
+    phones: [{ display: "09-277 9777", tel: "+6092779777" }],
+    fax: null,
+    email: "general@rhcolegal.com",
+    mapQuery: "Jalan Haji Kassim, 28400 Mentakab, Pahang",
+  },
+];
 
 export const PRACTICE_AREAS = [
   {
@@ -115,14 +137,19 @@ export const LAWYERS = [
     education: ["LL.B. (Hons), International Islamic University Malaysia"],
   },
   {
-    id: "kevin-lee",
-    name: "Kevin Lee",
+    id: "kelly-chan",
+    name: "Kelly Chan",
     role: "Associate",
-    area: "Employment & Intellectual Property",
+    area: "Employment Law",
     practiceId: "employment",
-    years: 6,
-    bio: ["Kevin advises employers on workplace policy and helps start-ups protect their brands."],
-    education: ["LL.B. (Hons), Multimedia University"],
+    years: 5,
+    phone: { display: "012-339 1446", tel: "+60123391446" },
+    bio: [],
+    education: [
+      "LL.B (Hons), Queen's University Belfast",
+      "LL.M., Nottingham Law School",
+      "Barrister of the Inner Temple",
+    ],
   },
 ];
 
@@ -188,5 +215,5 @@ export const FAQS = [
   { q: "What should I bring to my first meeting?", a: "Bring your identity document, any contracts or letters about the matter, and a short timeline of events. Do not worry if your papers are incomplete." },
   { q: "Is what I tell you confidential?", a: "Yes. Communications with your lawyer are protected by legal professional privilege and our duty of confidentiality." },
   { q: "Can I contact the firm online instead of visiting?", a: "Yes. We take enquiries by phone, email and WhatsApp, and we can hold meetings by video call." },
-  { q: "Do you act for clients outside Kuala Lumpur?", a: "Yes. We act for clients across Malaysia and for overseas clients with Malaysian matters." },
+  { q: "Do you act for clients outside Kuantan and Mentakab?", a: "Yes. We act for clients across Pahang and the rest of Malaysia, and for overseas clients with Malaysian matters." },
 ];

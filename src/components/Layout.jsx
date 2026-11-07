@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
-import { CONTACT, FIRM, FULL } from "../data/content.js";
+import { FIRM, FULL, OFFICES } from "../data/content.js";
 
 const NAV = [
   { to: "/", label: "Home", end: true },
@@ -56,17 +56,18 @@ function Footer() {
         <div>
           <strong>{FULL}</strong>
           <br />
-          {CONTACT.address.join(", ")}
-        </div>
-        <div>
-          <a href={`tel:${CONTACT.tel}`}>{CONTACT.phone}</a>
-          <br />
-          <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
-        </div>
-        <div>
           This website provides general information and is not legal advice.
-          <br />© 2026 {FIRM}. Placeholder content.
+          <br />© 2026 {FIRM}.
         </div>
+        {OFFICES.map((o) => (
+          <div key={o.id}>
+            <strong>{o.name}</strong>
+            <br />
+            <a href={`tel:${o.phones[0].tel}`}>{o.phones[0].display}</a>
+            <br />
+            <a href={`mailto:${o.email}`}>{o.email}</a>
+          </div>
+        ))}
       </div>
     </footer>
   );
