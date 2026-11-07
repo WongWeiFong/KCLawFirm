@@ -152,14 +152,22 @@ details p { padding: 0 1.2rem; color: var(--muted); }
 
 /* Admin */
 .admin { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; background: var(--white); }
-.admin-side { border-right: 2px solid var(--gold); padding: 1.5rem 1.2rem; display: flex; flex-direction: column; gap: 0.8rem; background: var(--soft); }
-.admin-side ul { list-style: none; margin: 0; padding: 0; }
-.admin-side nav a { display: block; padding: 0.55rem 0.7rem; text-decoration: none; color: var(--ink); border-left: 3px solid transparent; }
+.admin-side { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; border-right: 1px solid var(--line); padding: 1.7rem 1.2rem 1.2rem; display: flex; flex-direction: column; gap: 0.8rem; background: var(--soft); }
+.admin-side > .logo { padding: 0 0.7rem; }
+.admin-side > .meta { padding: 0 0.7rem; margin: 0 0 0.4rem; overflow-wrap: anywhere; color: var(--muted); font-size: 0.9rem; }
+.admin-side nav ul { display: flex; flex-direction: column; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
+.admin-side nav a { display: block; padding: 0.55rem 0.7rem; text-decoration: none; color: var(--ink); border-left: 3px solid transparent; border-radius: 0 3px 3px 0; }
 .admin-side nav a:hover { background: var(--gold-wash); }
-.admin-side nav a.active { border-left-color: var(--gold); background: var(--gold-wash); font-weight: 600; }
-.side-link { font-size: 0.95rem; }
+.admin-side nav a.active { border-left-color: var(--gold); background: var(--gold-wash); color: var(--gold-deep); font-weight: 600; }
+.admin-side-actions { display: grid; gap: 0.6rem; margin-top: auto; padding: 1rem 0.7rem 0; border-top: 1px solid var(--line); }
+.admin-side-actions .side-link { font-size: 0.95rem; text-align: center; }
+.admin-side-actions .btn { width: 100%; }
 .admin-main { padding: 2rem clamp(1rem, 3vw, 2.5rem) 4rem; max-width: 1000px; width: 100%; }
-@media (max-width: 800px) { .admin { grid-template-columns: 1fr; } .admin-side { border-right: 0; border-bottom: 2px solid var(--gold); } }
+@media (max-width: 800px) {
+  .admin { grid-template-columns: 1fr; }
+  .admin-side { position: static; height: auto; overflow: visible; border-right: 0; border-bottom: 1px solid var(--line); }
+  .admin-side-actions { margin-top: 0.4rem; }
+}
 .page-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
 .filters { display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 1rem 0; }
 .filters input, .filters select { padding: 0.6rem 0.8rem; border: 1px solid var(--line); border-radius: 3px; font: inherit; background: var(--white); color: var(--ink); }

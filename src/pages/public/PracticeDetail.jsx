@@ -1,19 +1,23 @@
 import { Link, useParams } from "react-router-dom";
 import Cta from "../../components/public/Cta.jsx";
-import NotFound from "./NotFound.jsx";
+import { ErrorNote, Loading } from "../../components/common/Status.jsx";
+import NotFound from "../NotFound.jsx";
 import { useSite } from "../../context/SiteContext.jsx";
 import useAsync from "../../hooks/useAsync.js";
 import usePageTitle from "../../hooks/usePageTitle.js";
+import { getPracticeBySlug } from "../../services/practice.js";
 import { listActiveLawyers } from "../../services/lawyers.js";
-import { PRACTICE_AREAS } from "../../data/staticContent.js";
-import { telHref } from "../../lib/format.js";
+import { paragraphs, telHref } from "../../lib/format.js";
 
 export default function PracticeDetail() {
-  const { id } = useParams();
-  const area = PRACTICE_AREAS.find((a) => a.id === id);
-  usePageTitle(area?.name);
+  const { slug } = useParams();
   const { offices } = useSite();
+  const { data: area, loading, error } = useAsync(() => getPracticeBySlug(slug), [slug]);
   const { data: lawyers } = useAsync(listActiveLawyers);
+  usePageTitle(area?.name);
+
+  if (loading) return <div className="wrap block"><Loading /></div>;
+  if (error) return <div className="wrap block"><ErrorNote /></div>;
   if (!area) return <NotFound />;
 
   const team = (lawyers || []).filter((l) => l.practice_areas?.includes(area.name));
@@ -27,9 +31,13 @@ export default function PracticeDetail() {
           <h1>{area.name}</h1>
           <div className="two">
             <div>
-              {area.body.map((p, i) => <p key={i}>{p}</p>)}
-              <h2>What we handle</h2>
-              <ul className="plain">{area.items.map((x) => <li key={x}>{x}</li>)}</ul>
+              {paragraphs(area.body).map((p, i) => <p key={i}>{p}</p>)}
+              {area.items?.length > 0 && (
+                <>
+                  <h2>What we handle</h2>
+                  <ul className="plain">{area.items.map((x) => <li key={x}>{x}</li>)}</ul>
+                </>
+              )}
             </div>
             <aside className="side">
               <h3>Speak to us</h3>

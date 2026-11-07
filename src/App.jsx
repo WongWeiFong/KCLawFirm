@@ -22,6 +22,10 @@ import ArticleForm from "./pages/admin/ArticleForm.jsx";
 import AdminLawyers from "./pages/admin/Lawyers.jsx";
 import LawyerForm from "./pages/admin/LawyerForm.jsx";
 import Office from "./pages/admin/Office.jsx";
+import AdminAbout from "./pages/admin/About.jsx";
+import AdminPracticeAreas from "./pages/admin/PracticeAreas.jsx";
+import PracticeForm from "./pages/admin/PracticeForm.jsx";
+import AdminFaqs from "./pages/admin/Faqs.jsx";
 
 export default function App() {
   return (
@@ -31,7 +35,7 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
         <Route path="practice" element={<Practice />} />
-        <Route path="practice/:id" element={<PracticeDetail />} />
+        <Route path="practice/:slug" element={<PracticeDetail />} />
         <Route path="lawyers" element={<Lawyers />} />
         <Route path="lawyers/:id" element={<LawyerDetail />} />
         <Route path="articles" element={<Articles />} />
@@ -52,6 +56,11 @@ export default function App() {
           <Route path="lawyers" element={<AdminLawyers />} />
           <Route path="lawyers/new" element={<LawyerForm />} />
           <Route path="lawyers/:id/edit" element={<LawyerForm />} />
+          <Route path="practice-areas" element={<AdminPracticeAreas />} />
+          <Route path="practice-areas/new" element={<PracticeForm />} />
+          <Route path="practice-areas/:id/edit" element={<PracticeForm />} />
+          <Route path="about" element={<AdminAbout />} />
+          <Route path="faq" element={<AdminFaqs />} />
           <Route path="office" element={<Office />} />
         </Route>
       </Route>

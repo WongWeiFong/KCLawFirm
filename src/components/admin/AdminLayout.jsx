@@ -6,6 +6,9 @@ const LINKS = [
   { to: "/admin", label: "Overview", end: true },
   { to: "/admin/articles", label: "Articles" },
   { to: "/admin/lawyers", label: "Lawyers" },
+  { to: "/admin/practice-areas", label: "Practice areas" },
+  { to: "/admin/about", label: "About us" },
+  { to: "/admin/faq", label: "FAQ" },
   { to: "/admin/office", label: "Office information" },
 ];
 
@@ -39,8 +42,10 @@ export default function AdminLayout() {
             ))}
           </ul>
         </nav>
-        <Link to="/" className="side-link">View website</Link>
-        <button className="btn line" onClick={logout}>Log out</button>
+        <div className="admin-side-actions">
+          <Link to="/" className="side-link">View website</Link>
+          <button className="btn line" onClick={logout}>Log out</button>
+        </div>
       </aside>
       <main className="admin-main" id="main-content">
         <Outlet />

@@ -1,33 +1,41 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Cta from "../../components/public/Cta.jsx";
+import { ErrorNote, Loading } from "../../components/common/Status.jsx";
+import useAsync from "../../hooks/useAsync.js";
 import usePageTitle from "../../hooks/usePageTitle.js";
-import { PRACTICE_AREAS } from "../../data/staticContent.js";
+import { listActivePractice } from "../../services/practice.js";
 
-const FILTERS = [
-  { key: "All", label: "All" },
-  { key: "Core", label: "Core practices" },
-  { key: "Other", label: "Other practice areas" },
-];
+const LABELS = { Core: "Core practices", Other: "Other practice areas" };
 
 export default function Practice() {
   usePageTitle("Practice areas");
+  const { data, loading, error } = useAsync(listActivePractice);
   const [group, setGroup] = useState("All");
-  const list = PRACTICE_AREAS.filter((a) => group === "All" || a.group === group);
+
+  const categories = ["All", ...new Set((data || []).map((a) => a.category))];
+  const list = (data || []).filter((a) => group === "All" || a.category === group);
+
   return (
     <>
       <section className="block">
         <div className="wrap">
           <h1>Practice areas</h1>
-          <p>Our three core practices are corporate, litigation and property. We also advise in related areas.</p>
-          <div className="chips" role="group" aria-label="Filter practice areas">
-            {FILTERS.map((f) => (
-              <button key={f.key} className="chip" aria-pressed={group === f.key} onClick={() => setGroup(f.key)}>{f.label}</button>
-            ))}
-          </div>
+          {loading && <Loading />}
+          {error && <ErrorNote />}
+          {data?.length === 0 && <p>Our practice areas will appear here soon.</p>}
+          {categories.length > 2 && (
+            <div className="chips" role="group" aria-label="Filter practice areas">
+              {categories.map((c) => (
+                <button key={c} className="chip" aria-pressed={group === c} onClick={() => setGroup(c)}>
+                  {LABELS[c] || c}
+                </button>
+              ))}
+            </div>
+          )}
           <div className="grid">
             {list.map((a) => (
-              <Link key={a.id} to={`/practice/${a.id}`} className="card">
+              <Link key={a.id} to={`/practice/${a.slug}`} className="card">
                 <h3>{a.name}</h3>
                 <p>{a.short}</p>
               </Link>
