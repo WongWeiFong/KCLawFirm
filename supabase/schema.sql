@@ -116,7 +116,7 @@ create policy "images: admin delete"  on storage.objects for delete using (bucke
 
 -- 5. Starter content (edit later from the admin area) -----------------------
 insert into public.site_settings (id, firm_name, whatsapp, business_hours) values
-  (1, 'Tan & Rahman Advocates & Solicitors', '60123391446', 'Monday to Friday, 9:00 am to 6:00 pm')
+  (1, 'Kelly Chan Advocates & Solicitors', '60123391446', 'Monday to Friday, 9:00 am to 6:00 pm')
 on conflict (id) do nothing;
 
 insert into public.offices (name, address, phones, fax, email, map_query, display_order) values

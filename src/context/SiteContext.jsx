@@ -3,7 +3,7 @@ import useAsync from "../hooks/useAsync.js";
 import { getSettings, listActiveOffices } from "../services/office.js";
 
 const DEFAULTS = {
-  firm_name: "Tan & Rahman Advocates & Solicitors",
+  firm_name: "Kelly Chan Advocates & Solicitors",
   whatsapp: "",
   business_hours: "",
   social_links: {},

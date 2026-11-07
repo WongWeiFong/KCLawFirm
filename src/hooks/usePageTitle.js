@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const SUFFIX = "Tan & Rahman Advocates & Solicitors";
+const SUFFIX = "Kelly Chan Advocates & Solicitors";
 
 export default function usePageTitle(title) {
   useEffect(() => {
