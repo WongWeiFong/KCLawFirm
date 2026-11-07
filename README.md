@@ -8,13 +8,16 @@ Backend: Supabase (authentication, Postgres database, image storage). Hosting: V
 1. Create a project at https://supabase.com.
 2. Open **SQL Editor**, paste all of `supabase/schema.sql` and run it. This creates the tables,
    the security rules, the image bucket and starter content.
-3. **Authentication → Users → Add user**: create the administrator (email + password, tick *Auto confirm*).
-4. Run this in the SQL Editor with that email to make the account an administrator:
+3. Run `supabase/migration-2.sql` and then `supabase/migration-3.sql` in the SQL Editor to add
+   the remaining content tables and staff support.
+4. **Authentication → Users → Add user**: create the administrator (email + password, tick *Auto confirm*).
+5. Run this in the SQL Editor with that email to make the account an administrator:
    ```sql
    update public.profiles set role = 'admin' where email = 'you@example.com';
    ```
-5. **Authentication → Sign In / Providers**: turn **off** "Allow new users to sign up" so nobody else can register.
-6. **Project Settings → API**: copy the Project URL and the `anon` public key.
+6. Run `supabase/migration-4.sql` in the SQL Editor. This allows active administrators and staff to update their own name and phone without granting access to other profile fields.
+7. **Authentication → Sign In / Providers**: turn **off** "Allow new users to sign up" so nobody else can register.
+8. **Project Settings → API**: copy the Project URL and the `anon` public key.
 
 ## 2. Run locally
 

@@ -57,6 +57,50 @@ export default async function handler(req, res) {
         return res.status(200).json({ id: data.user.id });
       }
 
+      case "update_own_profile": {
+        const id = auth.user.id;
+        const full_name = clean(body.full_name, 120);
+        const email = clean(body.email).toLowerCase();
+        const phone = clean(body.phone, 40);
+        const role = body.role;
+        const is_active = body.is_active;
+        if (!full_name) throw new UserError("Full name is required.");
+        if (!isEmail(email)) throw new UserError("Enter a valid email address.");
+        if (!["admin", "staff", "viewer"].includes(role)) throw new UserError("Choose a valid role.");
+        if (typeof is_active !== "boolean") throw new UserError("Choose a valid account status.");
+
+        const { data: current, error: currentError } = await sb
+          .from("profiles")
+          .select("email,is_active")
+          .eq("id", id)
+          .maybeSingle();
+        if (currentError || !current) throw new UserError("Could not load your current profile.");
+
+        const { error: authUpdateError } = await sb.auth.admin.updateUserById(id, {
+          email,
+          email_confirm: true,
+          ban_duration: is_active ? "none" : "876000h",
+        });
+        if (authUpdateError) throw new UserError(authUpdateError.message);
+
+        const { error: profileUpdateError } = await sb
+          .from("profiles")
+          .update({ full_name, email, phone: phone || null, role, is_active })
+          .eq("id", id);
+        if (profileUpdateError) {
+          const { error: rollbackError } = await sb.auth.admin.updateUserById(id, {
+            email: current.email || auth.user.email,
+            email_confirm: true,
+            ban_duration: current.is_active ? "none" : "876000h",
+          });
+          if (rollbackError) {
+            throw new UserError("Your profile could not be saved and your email could not be restored. Contact an administrator.");
+          }
+          throw new UserError("Could not save your profile changes.");
+        }
+        return res.status(200).json({ ok: true });
+      }
+
       case "update": {
         await requireStaff(body.id);
         const id = clean(body.id, 64);

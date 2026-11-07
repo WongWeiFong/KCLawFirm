@@ -35,7 +35,7 @@ export default function AdminArticles() {
         <Link className="btn gold" to="/admin/articles/new">New article</Link>
       </div>
       <div className="filters">
-        <input type="search" placeholder="Search by title" aria-label="Search articles" value={q} onChange={(e) => setQ(e.target.value)} />
+        <input type="search" placeholder="Search by title" aria-label="Search articles" value={q} onChange={(e) => setQ(e.target.value)} style={{ width: "320px", maxWidth: "100%" }} />
         <select aria-label="Filter by status" value={status} onChange={(e) => setStatus(e.target.value)}>
           <option value="all">All statuses</option>
           <option value="published">Published</option>

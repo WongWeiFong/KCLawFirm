@@ -42,7 +42,7 @@ export default function Staff() {
       </div>
       <p className="note">Staff can manage website content and their own password. They cannot manage other accounts.</p>
       <div className="filters">
-        <input type="search" placeholder="Search by name or email" aria-label="Search staff" value={q} onChange={(e) => setQ(e.target.value)} />
+        <input type="search" placeholder="Search by name or email" aria-label="Search staff" value={q} onChange={(e) => setQ(e.target.value)} style={{ width: "320px", maxWidth: "100%" }} />
         <select aria-label="Filter by status" value={status} onChange={(e) => setStatus(e.target.value)}>
           <option value="all">All statuses</option>
           <option value="active">Active</option>
@@ -65,9 +65,9 @@ export default function Staff() {
                   <td>{formatDate(s.created_at)}</td>
                   <td className="actions">
                     <Link to={`/admin/staff/${s.id}/edit`}>Edit</Link>
-                    <button className="link-btn" onClick={() => run(() => setStaffActive(s.id, !s.is_active), s.is_active ? "Staff deactivated." : "Staff activated.")}>
+                    {/* <button className="link-btn" onClick={() => run(() => setStaffActive(s.id, !s.is_active), s.is_active ? "Staff deactivated." : "Staff activated.")}>
                       {s.is_active ? "Deactivate" : "Activate"}
-                    </button>
+                    </button> */}
                     <button className="link-btn danger" onClick={() => remove(s)}>Delete</button>
                   </td>
                 </tr>

@@ -36,7 +36,7 @@ export default function Dashboard() {
           </Link>
         ))}
       </div>
-        <div aria-hidden="true" style={{ display: "flex", alignItems: "center", gap: "1rem", margin: "2.5rem 0" }}>
+      <div aria-hidden="true" style={{ display: "flex", alignItems: "center", gap: "1rem", margin: "2.5rem 0" }}>
         <span style={{ flex: 1, height: "1px", background: "linear-gradient(to right, transparent, var(--gold, #b9975b))" }} />
         <span style={{ color: "var(--gold, #b9975b)", fontSize: "1.1rem" }}>✦</span>
         <span style={{ flex: 1, height: "1px", background: "linear-gradient(to left, transparent, var(--gold, #b9975b))" }} />

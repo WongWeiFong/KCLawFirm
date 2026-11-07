@@ -28,6 +28,7 @@ import AdminPracticeAreas from "./pages/admin/PracticeAreas.jsx";
 import PracticeForm from "./pages/admin/PracticeForm.jsx";
 import AdminFaqs from "./pages/admin/Faqs.jsx";
 import Profile from "./pages/admin/Profile.jsx";
+import ProfileEdit from "./pages/admin/ProfileEdit.jsx";
 import Staff from "./pages/admin/Staff.jsx";
 import StaffForm from "./pages/admin/StaffForm.jsx";
 
@@ -67,6 +68,7 @@ export default function App() {
           <Route path="faq" element={<AdminFaqs />} />
           <Route path="office" element={<Office />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="profile/edit" element={<ProfileEdit />} />
           <Route element={<AdminOnlyRoute />}>
             <Route path="staff" element={<Staff />} />
             <Route path="staff/new" element={<StaffForm />} />

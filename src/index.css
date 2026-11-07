@@ -177,6 +177,25 @@ details p { padding: 0 1.2rem; color: var(--muted); }
   .admin-side-actions { margin-top: 0.4rem; }
 }
 .page-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.profile-head { align-items: center; margin-bottom: 2rem; }
+.profile-head h1 { margin-bottom: 0.2rem; }
+.profile-head .meta { margin-bottom: 0; }
+.profile-eyebrow { color: var(--gold-deep); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em; margin: 0 0 0.4rem; }
+.profile-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; margin: 0; border: 1px solid var(--line); border-top: 3px solid var(--gold); background: var(--white); }
+.profile-detail { padding: 1.15rem 1.4rem; border-bottom: 1px solid var(--line); }
+.profile-detail:nth-last-child(-n + 2) { border-bottom: 0; }
+.profile-detail dt { color: var(--muted); font-size: 0.9rem; }
+.profile-detail dd { margin: 0.15rem 0 0; font-weight: 500; overflow-wrap: anywhere; }
+.profile-section { max-width: 760px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--line); border-top: 3px solid var(--gold); background: var(--white); }
+.profile-section h2 { margin-bottom: 0.4rem; }
+.profile-section > .meta { margin-bottom: 1.25rem; }
+.profile-section .btns { margin-top: 0.4rem; }
+@media (max-width: 520px) {
+  .profile-summary { grid-template-columns: 1fr; }
+  .profile-detail:nth-last-child(-n + 2) { border-bottom: 1px solid var(--line); }
+  .profile-detail:last-child { border-bottom: 0; }
+  .profile-section { padding: 1.1rem; }
+}
 .filters { display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 1rem 0; }
 .filters input, .filters select { padding: 0.6rem 0.8rem; border: 1px solid var(--line); border-radius: 3px; font: inherit; background: var(--white); color: var(--ink); }
 .table-wrap { overflow-x: auto; }

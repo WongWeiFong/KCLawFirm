@@ -24,6 +24,40 @@ export async function fetchProfile(userId) {
   return data;
 }
 
+export async function updateOwnProfile(userId, { full_name, phone }) {
+  const { data, error } = await db()
+    .from("profiles")
+    .update({ full_name, phone })
+    .eq("id", userId)
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function updateOwnAdminProfile({ full_name, email, phone, role, is_active }) {
+  const session = await getSession();
+  if (!session?.access_token) throw new Error("Please log in again.");
+
+  const response = await fetch("/api/staff", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session.access_token}`,
+    },
+    body: JSON.stringify({ action: "update_own_profile", full_name, email, phone, role, is_active }),
+  });
+
+  let result;
+  try {
+    result = await response.json();
+  } catch {
+    throw new Error("The server returned an invalid response.");
+  }
+  if (!response.ok) throw new Error(result.error || "Could not update your profile.");
+  return result;
+}
+
 // Checks the current password first, then sets the new one.
 export async function changePassword(email, currentPassword, newPassword) {
   const { error: checkError } = await db().auth.signInWithPassword({ email, password: currentPassword });
