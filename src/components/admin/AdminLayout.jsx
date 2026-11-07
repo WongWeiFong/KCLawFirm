@@ -13,7 +13,7 @@ const LINKS = [
 ];
 
 export default function AdminLayout() {
-  const { user, signOut } = useAuth();
+  const { user, profile, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -35,7 +35,12 @@ export default function AdminLayout() {
     <div className="admin">
       <aside className="admin-side">
         <div className="admin-side-header">
-          <Link to="/admin" className="logo">Admin</Link>
+          {/* <Link to="/admin" className="logo">Admin</Link> */}
+          <p className="meta">
+          {profile?.full_name || user?.email}
+          <br />
+          <span className={`badge ${isAdmin ? "published" : "draft"}`}>{isAdmin ? "Administrator" : "Staff"}</span>
+        </p>
           <button
             type="button"
             className="admin-menu-toggle"
@@ -47,12 +52,13 @@ export default function AdminLayout() {
           </button>
         </div>
         <div id="admin-side-content" className={`admin-side-content${menuOpen ? " is-open" : ""}`}>
-          <p className="meta">{user?.email}</p>
           <nav aria-label="Admin">
             <ul>
               {LINKS.map((l) => (
                 <li key={l.to}><NavLink to={l.to} end={l.end} onClick={() => setMenuOpen(false)}>{l.label}</NavLink></li>
               ))}
+               {isAdmin && <li><NavLink to="/admin/staff">Staff</NavLink></li>}
+            <li><NavLink to="/admin/profile">My profile</NavLink></li>
             </ul>
           </nav>
           <div className="admin-side-actions">

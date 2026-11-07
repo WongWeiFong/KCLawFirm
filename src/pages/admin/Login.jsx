@@ -7,7 +7,7 @@ import { isConfigured } from "../../lib/supabase.js";
 
 export default function Login() {
   usePageTitle("Admin login");
-  const { signIn, session, isAdmin, loading } = useAuth();
+  const { signIn, session, canAccess, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [email, setEmail] = useState("");
@@ -15,7 +15,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
-  if (!loading && session && isAdmin) return <Navigate to="/admin" replace />;
+  if (!loading && session && canAccess) return <Navigate to="/admin" replace />;
 
   async function submit(e) {
     e.preventDefault();

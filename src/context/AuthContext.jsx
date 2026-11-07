@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { isConfigured } from "../lib/supabase.js";
 import * as auth from "../services/auth.js";
 
@@ -8,7 +8,7 @@ export const useAuth = () => useContext(AuthContext);
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
   const [ready, setReady] = useState(!isConfigured);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [profile, setProfile] = useState(null);
   const [checkedUid, setCheckedUid] = useState(null);
 
   useEffect(() => {
@@ -25,14 +25,14 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     if (!uid) {
-      setIsAdmin(false);
+      setProfile(null);
       setCheckedUid(null);
       return undefined;
     }
     let cancelled = false;
-    auth.fetchIsAdmin(uid).then((value) => {
+    auth.fetchProfile(uid).then((p) => {
       if (cancelled) return;
-      setIsAdmin(value);
+      setProfile(p);
       setCheckedUid(uid);
     });
     return () => {
@@ -40,17 +40,29 @@ export function AuthProvider({ children }) {
     };
   }, [uid]);
 
-  const value = useMemo(
-    () => ({
+  const refreshProfile = useCallback(async () => {
+    if (uid) setProfile(await auth.fetchProfile(uid));
+  }, [uid]);
+
+  const value = useMemo(() => {
+    const active = profile?.is_active !== false;
+    const isAdmin = profile?.role === "admin" && active;
+    const isStaff = profile?.role === "staff" && active;
+    return {
       session,
       user: session?.user ?? null,
+      profile,
+      role: profile?.role ?? null,
       isAdmin,
+      isStaff,
+      canAccess: isAdmin || isStaff,
+      deactivated: Boolean(profile) && !active,
       loading: !ready || (Boolean(uid) && checkedUid !== uid),
+      refreshProfile,
       signIn: auth.signIn,
       signOut: auth.signOut,
-    }),
-    [session, isAdmin, ready, uid, checkedUid]
-  );
+    };
+  }, [session, profile, ready, uid, checkedUid, refreshProfile]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

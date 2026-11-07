@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import PublicLayout from "./components/public/PublicLayout.jsx";
 import AdminLayout from "./components/admin/AdminLayout.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
+import AdminOnlyRoute from "./routes/AdminOnlyRoute.jsx";
 
 import Home from "./pages/public/Home.jsx";
 import About from "./pages/public/About.jsx";
@@ -26,6 +27,9 @@ import AdminAbout from "./pages/admin/About.jsx";
 import AdminPracticeAreas from "./pages/admin/PracticeAreas.jsx";
 import PracticeForm from "./pages/admin/PracticeForm.jsx";
 import AdminFaqs from "./pages/admin/Faqs.jsx";
+import Profile from "./pages/admin/Profile.jsx";
+import Staff from "./pages/admin/Staff.jsx";
+import StaffForm from "./pages/admin/StaffForm.jsx";
 
 export default function App() {
   return (
@@ -62,6 +66,12 @@ export default function App() {
           <Route path="about" element={<AdminAbout />} />
           <Route path="faq" element={<AdminFaqs />} />
           <Route path="office" element={<Office />} />
+          <Route path="profile" element={<Profile />} />
+          <Route element={<AdminOnlyRoute />}>
+            <Route path="staff" element={<Staff />} />
+            <Route path="staff/new" element={<StaffForm />} />
+            <Route path="staff/:id/edit" element={<StaffForm />} />
+          </Route>
         </Route>
       </Route>
     </Routes>
