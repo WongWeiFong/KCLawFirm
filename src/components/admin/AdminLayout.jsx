@@ -4,10 +4,10 @@ import { useAuth } from "../../context/AuthContext.jsx";
 
 const LINKS = [
   { to: "/admin", label: "Overview", end: true },
-  { to: "/admin/articles", label: "Articles" },
-  { to: "/admin/lawyers", label: "Lawyers" },
-  { to: "/admin/practice-areas", label: "Practice areas" },
   { to: "/admin/about", label: "About us" },
+  { to: "/admin/practice-areas", label: "Practice areas" },
+  { to: "/admin/lawyers", label: "Lawyers" },
+  { to: "/admin/articles", label: "Articles" },
   { to: "/admin/faq", label: "FAQ" },
   { to: "/admin/office", label: "Office information" },
 ];
