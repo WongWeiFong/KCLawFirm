@@ -153,8 +153,11 @@ details p { padding: 0 1.2rem; color: var(--muted); }
 /* Admin */
 .admin { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; background: var(--white); }
 .admin-side { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; border-right: 1px solid var(--line); padding: 1.7rem 1.2rem 1.2rem; display: flex; flex-direction: column; gap: 0.8rem; background: var(--soft); }
-.admin-side > .logo { padding: 0 0.7rem; }
-.admin-side > .meta { padding: 0 0.7rem; margin: 0 0 0.4rem; overflow-wrap: anywhere; color: var(--muted); font-size: 0.9rem; }
+.admin-side-header { display: contents; }
+.admin-side-header > .logo { padding: 0 0.7rem; }
+.admin-menu-toggle { display: none; }
+.admin-side-content { display: flex; flex: 1; flex-direction: column; gap: 0.8rem; }
+.admin-side-content > .meta { padding: 0 0.7rem; margin: 0 0 0.4rem; overflow-wrap: anywhere; color: var(--muted); font-size: 0.9rem; }
 .admin-side nav ul { display: flex; flex-direction: column; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
 .admin-side nav a { display: block; padding: 0.55rem 0.7rem; text-decoration: none; color: var(--ink); border-left: 3px solid transparent; border-radius: 0 3px 3px 0; }
 .admin-side nav a:hover { background: var(--gold-wash); }
@@ -165,7 +168,12 @@ details p { padding: 0 1.2rem; color: var(--muted); }
 .admin-main { padding: 2rem clamp(1rem, 3vw, 2.5rem) 4rem; max-width: 1000px; width: 100%; }
 @media (max-width: 800px) {
   .admin { grid-template-columns: 1fr; }
-  .admin-side { position: static; height: auto; overflow: visible; border-right: 0; border-bottom: 1px solid var(--line); }
+  .admin-side { position: static; height: auto; overflow: visible; border-right: 0; border-bottom: 1px solid var(--line); padding: 0.8rem 1rem; }
+  .admin-side-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .admin-menu-toggle { display: block; min-width: 5rem; padding: 0.45rem 0.8rem; border: 1px solid var(--gold); border-radius: 3px; background: var(--white); color: var(--ink); font: inherit; cursor: pointer; }
+  .admin-side-content { display: none; padding: 0.8rem 0 0.2rem; }
+  .admin-side-content.is-open { display: flex; }
+  .admin-side nav { display: block; position: static; padding: 0; border: 0; }
   .admin-side-actions { margin-top: 0.4rem; }
 }
 .page-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
