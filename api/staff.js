@@ -2,14 +2,14 @@
 // Supabase service_role key, which must never be in the browser. This function:
 //   1. checks the caller's login token,
 //   2. checks the caller is an ACTIVE administrator,
-//   3. only then touches STAFF accounts (never admins).
+//   3. only then touches non-admin staff/viewer accounts (never existing admins).
 import { createClient } from "@supabase/supabase-js";
 
 const url = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const clean = (v, max = 200) => (typeof v === "string" ? v.trim().slice(0, max) : "");
-const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+const isEmail = (v) => /^[^'"\s@]+@[^'"\s@]+\.[^'"\s@]+$/.test(v);
 
 class UserError extends Error {}
 
@@ -29,9 +29,9 @@ export default async function handler(req, res) {
 
   const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
 
-  async function requireStaff(id) {
+  async function requireManagedAccount(id) {
     const { data } = await sb.from("profiles").select("role").eq("id", clean(id, 64)).maybeSingle();
-    if (data?.role !== "staff") throw new UserError("That account is not a staff account.");
+    if (!["staff", "viewer"].includes(data?.role)) throw new UserError("That account cannot be managed here.");
   }
 
   try {
@@ -102,27 +102,65 @@ export default async function handler(req, res) {
       }
 
       case "update": {
-        await requireStaff(body.id);
+        await requireManagedAccount(body.id);
         const id = clean(body.id, 64);
         const full_name = clean(body.full_name, 120);
         const email = clean(body.email).toLowerCase();
+        const role = body.role;
+        const is_active = body.is_active;
+        const createdAt = typeof body.created_at === "string" ? new Date(body.created_at) : null;
         if (!full_name) throw new UserError("Full name is required.");
         if (!isEmail(email)) throw new UserError("Enter a valid email address.");
+        if (!["admin", "staff", "viewer"].includes(role)) throw new UserError("Choose a valid role.");
+        if (typeof is_active !== "boolean") throw new UserError("Choose a valid account status.");
+        if (!createdAt || Number.isNaN(createdAt.getTime())) throw new UserError("Enter a valid account creation date.");
+        if (createdAt.getTime() > Date.now()) throw new UserError("Account creation date cannot be in the future.");
 
         const attrs = { email, email_confirm: true };
         if (typeof body.password === "string" && body.password) {
           if (body.password.length < 8) throw new UserError("The password must be at least 8 characters.");
           attrs.password = body.password;
         }
-        const { error } = await sb.auth.admin.updateUserById(id, attrs);
-        if (error) throw new UserError(error.message);
-        const { error: pErr } = await sb.from("profiles").update({ full_name, email, phone: clean(body.phone, 40) || null }).eq("id", id);
+        attrs.ban_duration = is_active ? "none" : "876000h";
+
+        const { data: current, error: currentError } = await sb
+          .from("profiles")
+          .select("full_name,email,phone,role,is_active,created_at")
+          .eq("id", id)
+          .maybeSingle();
+        if (currentError || !current) throw new UserError("Could not load the current staff profile.");
+
+        const profileChanges = {
+          full_name,
+          email,
+          phone: clean(body.phone, 40) || null,
+          role,
+          is_active,
+          created_at: createdAt.toISOString(),
+        };
+        const { error: pErr } = await sb.from("profiles").update(profileChanges).eq("id", id);
         if (pErr) throw new UserError("Could not update the staff profile.");
+
+        const { error } = await sb.auth.admin.updateUserById(id, attrs);
+        if (error) {
+          const { error: rollbackError } = await sb.from("profiles").update({
+            full_name: current.full_name,
+            email: current.email,
+            phone: current.phone,
+            role: current.role,
+            is_active: current.is_active,
+            created_at: current.created_at,
+          }).eq("id", id);
+          if (rollbackError) {
+            throw new UserError("The profile was updated, but the login account could not be updated or restored. Contact an administrator.");
+          }
+          throw new UserError(error.message);
+        }
         return res.status(200).json({ ok: true });
       }
 
       case "set_active": {
-        await requireStaff(body.id);
+        await requireManagedAccount(body.id);
         const id = clean(body.id, 64);
         const active = body.is_active === true;
         // Banning also stops the person from logging in at all.
@@ -133,7 +171,7 @@ export default async function handler(req, res) {
       }
 
       case "delete": {
-        await requireStaff(body.id);
+        await requireManagedAccount(body.id);
         const { error } = await sb.auth.admin.deleteUser(clean(body.id, 64));
         if (error) throw new UserError(error.message);
         return res.status(200).json({ ok: true });

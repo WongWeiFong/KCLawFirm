@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Field from "../../components/common/Field.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import usePageTitle from "../../hooks/usePageTitle.js";
-import { changePassword, updateOwnAdminProfile, updateOwnProfile } from "../../services/auth.js";
+import { changePassword, LOGIN_EMAIL_PATTERN, updateOwnAdminProfile, updateOwnProfile } from "../../services/auth.js";
 import { formatDate } from "../../lib/format.js";
 
 export default function ProfileEdit() {
@@ -102,6 +102,8 @@ export default function ProfileEdit() {
               value={details.email}
               onChange={(e) => setDetails((d) => ({ ...d, email: e.target.value }))}
               autoComplete="email"
+              maxLength={254}
+              pattern={LOGIN_EMAIL_PATTERN}
               disabled={!isAdmin}
               required
             />

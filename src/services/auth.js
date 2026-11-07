@@ -1,7 +1,12 @@
 import { db } from "../lib/supabase.js";
 
+export const LOGIN_EMAIL_PATTERN = "[^'\"\\s@]+@[^'\"\\s@]+\\.[^'\"\\s@]+";
+const isLoginEmail = (email) => new RegExp(`^${LOGIN_EMAIL_PATTERN}$`).test(email);
+
 export async function signIn(email, password) {
-  const { error } = await db().auth.signInWithPassword({ email, password });
+  const normalizedEmail = email.trim();
+  if (!isLoginEmail(normalizedEmail)) throw new Error("Enter a valid email address.");
+  const { error } = await db().auth.signInWithPassword({ email: normalizedEmail, password });
   if (error) throw error;
 }
 

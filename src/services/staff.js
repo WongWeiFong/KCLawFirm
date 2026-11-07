@@ -2,11 +2,11 @@ import { db, unwrap } from "../lib/supabase.js";
 
 // Reading staff is allowed for admins by row-level security.
 export async function listStaff() {
-  return unwrap(await db().from("profiles").select("*").eq("role", "staff").order("created_at", { ascending: false }));
+  return unwrap(await db().from("profiles").select("*").in("role", ["staff", "viewer"]).order("created_at", { ascending: false }));
 }
 
 export async function getStaff(id) {
-  return unwrap(await db().from("profiles").select("*").eq("id", id).eq("role", "staff").maybeSingle());
+  return unwrap(await db().from("profiles").select("*").eq("id", id).in("role", ["staff", "viewer"]).maybeSingle());
 }
 
 // Creating, changing and removing accounts happens in the server function (api/staff.js).

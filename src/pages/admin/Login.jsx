@@ -4,6 +4,7 @@ import Field from "../../components/common/Field.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import usePageTitle from "../../hooks/usePageTitle.js";
 import { isConfigured } from "../../lib/supabase.js";
+import { LOGIN_EMAIL_PATTERN } from "../../services/auth.js";
 
 export default function Login() {
   usePageTitle("Admin login");
@@ -37,7 +38,7 @@ export default function Login() {
         <h1>Admin login</h1>
         {!isConfigured && <p className="error-text" role="alert">The backend is not configured yet. See the README.</p>}
         <Field label="Email">
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="username" required />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="username" maxLength={254} pattern={LOGIN_EMAIL_PATTERN} required />
         </Field>
         <Field label="Password">
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" required />

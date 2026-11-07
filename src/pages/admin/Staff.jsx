@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ErrorNote, Loading } from "../../components/common/Status.jsx";
 import useAsync from "../../hooks/useAsync.js";
 import usePageTitle from "../../hooks/usePageTitle.js";
-import { deleteStaff, listStaff, setStaffActive } from "../../services/staff.js";
+import { deleteStaff, listStaff } from "../../services/staff.js";
 import { formatDate } from "../../lib/format.js";
 
 export default function Staff() {
@@ -40,7 +40,7 @@ export default function Staff() {
         <h1>Staff</h1>
         <Link className="btn gold" to="/admin/staff/new">Add staff</Link>
       </div>
-      <p className="note">Staff can manage website content and their own password. They cannot manage other accounts.</p>
+      <p className="note">Edit staff and viewer account details, roles, status, account dates, or passwords. Admin accounts are managed separately; promoting someone to admin removes them from this list.</p>
       <div className="filters">
         <input type="search" placeholder="Search by name or email" aria-label="Search staff" value={q} onChange={(e) => setQ(e.target.value)} style={{ width: "320px", maxWidth: "100%" }} />
         <select aria-label="Filter by status" value={status} onChange={(e) => setStatus(e.target.value)}>
@@ -55,24 +55,22 @@ export default function Staff() {
       {data && (
         <div className="table-wrap">
           <table className="table">
-            <thead><tr><th>Name</th><th>Phone</th><th>Status</th><th>Added</th><th><span className="sr">Actions</span></th></tr></thead>
+            <thead><tr><th>Name</th><th>Phone</th><th>Role</th><th>Status</th><th>Added</th><th><span className="sr">Actions</span></th></tr></thead>
             <tbody>
               {rows.map((s) => (
                 <tr key={s.id}>
                   <td>{s.full_name || "-"}<br /><span className="meta">{s.email}</span></td>
                   <td>{s.phone || "-"}</td>
+                  <td>{s.role === "viewer" ? "Viewer" : "Staff"}</td>
                   <td><span className={`badge ${s.is_active ? "published" : "draft"}`}>{s.is_active ? "Active" : "Inactive"}</span></td>
                   <td>{formatDate(s.created_at)}</td>
                   <td className="actions">
                     <Link to={`/admin/staff/${s.id}/edit`}>Edit</Link>
-                    {/* <button className="link-btn" onClick={() => run(() => setStaffActive(s.id, !s.is_active), s.is_active ? "Staff deactivated." : "Staff activated.")}>
-                      {s.is_active ? "Deactivate" : "Activate"}
-                    </button> */}
                     <button className="link-btn danger" onClick={() => remove(s)}>Delete</button>
                   </td>
                 </tr>
               ))}
-              {rows.length === 0 && <tr><td colSpan="5">No staff found.</td></tr>}
+              {rows.length === 0 && <tr><td colSpan="6">No staff found.</td></tr>}
             </tbody>
           </table>
         </div>
