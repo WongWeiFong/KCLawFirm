@@ -75,12 +75,14 @@ export default function PracticeForm() {
             <option value="Other">Other practice area</option>
           </select>
         </Field>
-        <Field label="Short description" hint="Shown on the cards."><textarea rows="2" value={form.short} onChange={(e) => set("short", e.target.value)} /></Field>
+        <Field label="Short description" hint="Shown on the cards.">
+          <textarea rows="2" style={{resize:"vertical"}}  value={form.short} onChange={(e) => set("short", e.target.value)} />
+        </Field>
         <Field label="Full description" hint="Leave a blank line between paragraphs.">
-          <textarea rows="9" value={form.body} onChange={(e) => set("body", e.target.value)} />
+          <textarea rows="9" style={{resize:"vertical"}}  value={form.body} onChange={(e) => set("body", e.target.value)} />
         </Field>
         <Field label="What we handle" hint="One per line.">
-          <textarea rows="6" value={form.items} onChange={(e) => set("items", e.target.value)} />
+          <textarea rows="6" style={{resize:"vertical"}} value={form.items} onChange={(e) => set("items", e.target.value)} />
         </Field>
         <Field label="Display order" hint="Lower numbers appear first. Leave blank to add at the end.">
           <input type="number" min="0" value={form.display_order} onChange={(e) => set("display_order", e.target.value)} />

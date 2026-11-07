@@ -44,11 +44,11 @@ export default function AdminAbout() {
       <form className="form" onSubmit={submit}>
         <Field label="Page title"><input value={form.title} onChange={(e) => set("title", e.target.value)} required /></Field>
         <Field label="Introduction" hint="Leave a blank line between paragraphs.">
-          <textarea rows="10" value={form.body} onChange={(e) => set("body", e.target.value)} />
+          <textarea rows="10" style={{resize:"vertical"}} value={form.body} onChange={(e) => set("body", e.target.value)} />
         </Field>
         <Field label="List heading" hint="For example: How we work. Leave blank to hide the heading."><input value={form.items_title} onChange={(e) => set("items_title", e.target.value)} /></Field>
         <Field label="List items" hint="One per line. Leave empty to hide the list.">
-          <textarea rows="6" value={form.items} onChange={(e) => set("items", e.target.value)} />
+          <textarea rows="6" style={{resize:"vertical"}} value={form.items} onChange={(e) => set("items", e.target.value)} />
         </Field>
         {msg && <p role="status" className="note">{msg}</p>}
         <div className="btns"><button className="btn gold" type="submit" disabled={saving}>{saving ? "Saving..." : "Save page"}</button></div>
