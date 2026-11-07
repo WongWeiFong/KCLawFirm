@@ -79,16 +79,16 @@ export default function LawyerForm() {
         <Field label="Position / designation"><input value={form.position} onChange={(e) => set("position", e.target.value)} /></Field>
         <ImageUpload label="Profile photo" folder="lawyers" value={form.photo_url} onChange={(v) => set("photo_url", v)} />
         <Field label="Biography" hint="Leave a blank line between paragraphs.">
-          <textarea rows="7" value={form.biography} onChange={(e) => set("biography", e.target.value)} />
+          <textarea rows="7" style={{ resize: "vertical" }} value={form.biography} onChange={(e) => set("biography", e.target.value)} />
         </Field>
         <Field label="Practice areas" hint="One per line. For the practice area pages to list this lawyer, use the exact name, for example Litigation.">
-          <textarea rows="3" value={form.practice_areas} onChange={(e) => set("practice_areas", e.target.value)} />
+          <textarea rows="3" style={{ resize: "vertical" }} value={form.practice_areas} onChange={(e) => set("practice_areas", e.target.value)} />
         </Field>
         <Field label="Education" hint="One per line.">
-          <textarea rows="3" value={form.education} onChange={(e) => set("education", e.target.value)} />
+          <textarea rows="3" style={{ resize: "vertical" }} value={form.education} onChange={(e) => set("education", e.target.value)} />
         </Field>
         <Field label="Professional qualifications and bar admission" hint="One per line.">
-          <textarea rows="3" value={form.qualifications} onChange={(e) => set("qualifications", e.target.value)} />
+          <textarea rows="3" style={{ resize: "vertical" }} value={form.qualifications} onChange={(e) => set("qualifications", e.target.value)} />
         </Field>
         <Field label="Email"><input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} /></Field>
         <Field label="Phone"><input value={form.phone} onChange={(e) => set("phone", e.target.value)} /></Field>
