@@ -8,21 +8,26 @@ Backend: Supabase (authentication, Postgres database, image storage). Hosting: V
 1. Create a project at https://supabase.com.
 2. Open **SQL Editor**, paste all of `supabase/schema.sql` and run it. This creates the tables,
    the security rules, the image bucket and starter content.
-3. Run `supabase/migration-2.sql` and then `supabase/migration-3.sql` in the SQL Editor to add
-   the remaining content tables and staff support.
+3. Run `supabase/migration-2.sql`, `supabase/migration-3.sql`, `supabase/migration-4.sql`, and
+   `supabase/migration-5.sql` in order to add the remaining content tables, staff support, and
+   staff presence.
 4. **Authentication → Users → Add user**: create the administrator (email + password, tick *Auto confirm*).
 5. Run this in the SQL Editor with that email to make the account an administrator:
    ```sql
    update public.profiles set role = 'admin' where email = 'you@example.com';
    ```
-6. Run `supabase/migration-4.sql` in the SQL Editor. This allows active administrators and staff to update their own name and phone without granting access to other profile fields.
-7. **Authentication → Sign In / Providers**: turn **off** "Allow new users to sign up" so nobody else can register.
-8. **Project Settings → API**: copy the Project URL and the `anon` public key.
+6. **Authentication → Sign In / Providers**: turn **off** "Allow new users to sign up" so nobody else can register.
+7. **Project Settings → API**: copy the Project URL and the `anon` public key.
+
+The admin area shows staff presence and last login in the right panel. Presence is refreshed every
+30 seconds; accounts are considered online for 90 seconds after their last update. Only staff
+accounts appear in this list, so administrator names are not exposed. Run migration 5 on an
+existing project to enable this feature.
 
 ## 2. Run locally
 
 ```bash
-cp .env.example .env.local     # then paste the two values from step 6
+cp .env.example .env.local     # then paste the two values from step 7
 npm install
 npm run dev
 ```

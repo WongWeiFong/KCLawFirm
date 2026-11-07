@@ -151,7 +151,7 @@ details p { padding: 0 1.2rem; color: var(--muted); }
 .socials a { margin-right: 1rem; }
 
 /* Admin */
-.admin { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; background: var(--white); }
+.admin { display: grid; grid-template-columns: 240px minmax(0, 1fr) 280px; min-height: 100vh; background: var(--white); }
 .admin-side { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; border-right: 1px solid var(--line); padding: 1.7rem 1.2rem 1.2rem; display: flex; flex-direction: column; gap: 0.8rem; background: var(--soft); }
 .admin-side-header { display: contents; }
 .admin-side-header > .logo { padding: 0 0.7rem; }
@@ -165,7 +165,26 @@ details p { padding: 0 1.2rem; color: var(--muted); }
 .admin-side-actions { display: grid; gap: 0.6rem; margin-top: auto; padding: 1rem 0.7rem 0; border-top: 1px solid var(--line); }
 .admin-side-actions .side-link { font-size: 0.95rem; text-align: center; }
 .admin-side-actions .btn { width: 100%; }
-.admin-main { padding: 2rem clamp(1rem, 3vw, 2.5rem) 4rem; max-width: 1000px; width: 100%; }
+.admin-main { padding: 2rem clamp(1rem, 3vw, 2.5rem) 4rem; min-width: 0; width: 100%; }
+.admin-presence { position: sticky; top: 0; align-self: start; min-height: 100vh; max-height: 100vh; overflow-y: auto; padding: 2rem 1.25rem; border-left: 1px solid var(--line); background: var(--soft); }
+.presence-heading { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; }
+.presence-heading h2 { font-size: 1.7rem; margin-bottom: 0.2rem; }
+.presence-heading .profile-eyebrow { margin-bottom: 0.3rem; }
+.presence-count { display: grid; place-items: center; min-width: 2rem; height: 2rem; padding: 0 0.45rem; border-radius: 999px; background: #e4f2e7; color: #236137; font-weight: 700; }
+.admin-presence > .meta { font-size: 0.85rem; }
+.presence-list { list-style: none; margin: 1.2rem 0 0; padding: 0; }
+.presence-person { display: grid; grid-template-columns: 0.7rem minmax(0, 1fr); align-items: start; gap: 0.75rem; padding: 0.9rem 0; border-top: 1px solid var(--line); }
+.presence-person > div { min-width: 0; }
+.presence-person strong, .presence-state, .presence-time { display: block; overflow-wrap: anywhere; }
+.presence-person strong { font-size: 0.98rem; font-weight: 600; line-height: 1.3; }
+.presence-state { margin-top: 0.2rem; color: var(--muted); font-size: 0.84rem; }
+.presence-time { margin-top: 0.2rem; color: var(--muted); font-size: 0.78rem; line-height: 1.45; }
+.presence-dot { width: 0.65rem; height: 0.65rem; margin-top: 0.35rem; border-radius: 50%; background: #aaa59a; box-shadow: 0 0 0 3px rgba(170, 165, 154, 0.16); }
+.presence-dot.is-online { background: #2b9a50; box-shadow: 0 0 0 3px rgba(43, 154, 80, 0.17); }
+@media (max-width: 1100px) {
+  .admin { grid-template-columns: 220px minmax(0, 1fr); }
+  .admin-presence { grid-column: 2; position: static; min-height: 0; max-height: none; border-top: 1px solid var(--line); border-left: 0; }
+}
 @media (max-width: 800px) {
   .admin { grid-template-columns: 1fr; }
   .admin-side { position: static; height: auto; overflow: visible; border-right: 0; border-bottom: 1px solid var(--line); padding: 0.8rem 1rem; }
@@ -175,6 +194,7 @@ details p { padding: 0 1.2rem; color: var(--muted); }
   .admin-side-content.is-open { display: flex; }
   .admin-side nav { display: block; position: static; padding: 0; border: 0; }
   .admin-side-actions { margin-top: 0.4rem; }
+  .admin-presence { grid-column: 1; padding: 1.25rem; }
 }
 .page-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
 .profile-head { align-items: center; margin-bottom: 2rem; }

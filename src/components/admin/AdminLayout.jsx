@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
+import StaffPresence from "./StaffPresence.jsx";
 
 const LINKS = [
   { to: "/admin", label: "Overview", end: true },
@@ -70,6 +71,7 @@ export default function AdminLayout() {
       <main className="admin-main" id="main-content">
         <Outlet />
       </main>
+      <StaffPresence />
     </div>
   );
 }
